@@ -67,9 +67,9 @@ public class TcpClientManager
     /// </summary>
     private void ReceivedServiceMessage()
     {
-        while (true)
+        try
         {
-            try
+            while (true)
             {
                 byte[] buffer = new byte[1024 * 6];
                 // 实际接收到的有效字节数
@@ -89,10 +89,11 @@ public class TcpClientManager
                     ParseServiceMessage(item);
                 }
             }
-            catch (Exception exception)
-            {
-                Debug.LogError("消息接收错误: " + exception.Message);
-            }
+
+        }
+        catch (Exception exception)
+        {
+            Debug.LogError("消息接收错误: " + exception.Message);
         }
     }
 

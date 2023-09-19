@@ -13,7 +13,8 @@ public class UdpClientManager
 
     public string receiveMessage;
 
-    private EndPoint serviceEndPoint;
+    private IPEndPoint serviceEndPoint;
+    private EndPoint receiveEndPoint;
     private Thread receivethread;
 
     public void Connect()
@@ -32,6 +33,7 @@ public class UdpClientManager
             IPAddress ip = IPAddress.Parse(udpServiceIp);
 
             serviceEndPoint = new IPEndPoint(ip, udpClientPort);
+            receiveEndPoint = new IPEndPoint(IPAddress.Any, 0);
             Debug.Log("创建Udp " + udpServiceIp + ":" + udpClientPort.ToString() + "成功");
 
             receivethread = new Thread(ReceivedServiceMessage)
@@ -70,22 +72,22 @@ public class UdpClientManager
     /// </summary>
     void ReceivedServiceMessage()
     {
-        while (true)
+        try
         {
-            try
+            while (true)
             {
                 byte[] recvData = new byte[1024];
-                int len = clientUdpSocket.ReceiveFrom(recvData, ref serviceEndPoint);
+                int len = clientUdpSocket.ReceiveFrom(recvData, ref receiveEndPoint);
                 if (len > 0)
                 {
                     receiveMessage = Encoding.UTF8.GetString(recvData, 0, len);
                     Debug.Log("接收服务器消息: " + receiveMessage);
                 }
             }
-            catch (Exception exception)
-            {
-                Debug.LogError("消息接收错误: " + exception.Message);
-            }
+        }
+        catch (Exception exception)
+        {
+            Debug.LogError("消息接收错误: " + exception.Message);
         }
     }
 

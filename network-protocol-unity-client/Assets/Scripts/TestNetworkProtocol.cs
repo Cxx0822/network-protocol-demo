@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class TestNetworkProtocol : MonoBehaviour
 {
-    TcpClientManager tcpClientManager = new TcpClientManager();
-    UdpClientManager udpClientManager = new UdpClientManager();
+    private readonly TcpClientManager tcpClientManager = new TcpClientManager();
+    private readonly UdpClientManager udpClientManager = new UdpClientManager();
 
     // Use this for initialization
     void Start()
