@@ -20,16 +20,12 @@ public class NettyUdpSimpleChannelInboundHandler extends SimpleChannelInboundHan
      */
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, DatagramPacket packet) throws Exception {
-        // 解析客户端消息
-        log.info("get upd client {} data {}", packet.sender().getAddress(), packet.content().toString(CharsetUtil.UTF_8));
         try {
-            long timeStamp = System.currentTimeMillis() / 1000;
+            // 解析客户端消息
+            String clientMessage = packet.content().toString(CharsetUtil.UTF_8);
+            log.info("get upd client {} data {}", packet.sender().getAddress(), clientMessage);
 
-            NettyUdpData nettyUdpData = new NettyUdpData();
-            nettyUdpData.setAddress(packet.sender().getAddress().toString());
-            nettyUdpData.setContent(packet.content().toString(CharsetUtil.UTF_8));
-            nettyUdpData.setTimeStamp(timeStamp);
-            ctx.writeAndFlush(new DatagramPacket(Unpooled.copiedBuffer(String.valueOf(timeStamp), CharsetUtil.UTF_8), packet.sender()));
+            ctx.writeAndFlush(new DatagramPacket(Unpooled.copiedBuffer(clientMessage, CharsetUtil.UTF_8), packet.sender()));
         } catch (Exception exception) {
             ctx.writeAndFlush(new DatagramPacket(Unpooled.copiedBuffer("exception", CharsetUtil.UTF_8), packet.sender()));
             log.error("get upd client {} data {} exception {}", packet.sender().getAddress(), packet.content().toString(CharsetUtil.UTF_8), exception.getMessage());
