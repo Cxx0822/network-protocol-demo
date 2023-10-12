@@ -34,8 +34,8 @@ public class NettyUdpServer {
             serverBootstrap = serverBootstrap.channel(NioDatagramChannel.class);
             // 4、设置通道参数 SO_BROADCAST广播形式
             serverBootstrap = serverBootstrap.option(ChannelOption.SO_BROADCAST, true);
-            // 5、设置处理类 装配流水线
-            serverBootstrap = serverBootstrap.handler(new NettyUdpSimpleChannelInboundHandler());
+            // 5、设置通道处理类
+            serverBootstrap = serverBootstrap.handler(new NettyUdpChannelInitializer());
             // 6、绑定server，通过调用sync方法异步阻塞，直到绑定成功
             ChannelFuture channelFuture = serverBootstrap.bind(port).sync();
 

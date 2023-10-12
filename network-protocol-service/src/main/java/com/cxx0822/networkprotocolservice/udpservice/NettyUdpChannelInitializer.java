@@ -13,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
  * @Description: I/O数据读写处理类
  */
 @Slf4j
-public class NettyUdpSimpleChannelInboundHandler extends SimpleChannelInboundHandler<DatagramPacket> {
+public class NettyUdpChannelInitializer extends SimpleChannelInboundHandler<DatagramPacket> {
 
     /**
      * 读取客户端消息
